@@ -16,38 +16,63 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
+    public static double sum;
     public void onClick(View v) {
+        Button b = (Button)v;
+        String buttonText = b.getText().toString();
+        TextView textView = (TextView)findViewById(R.id.textView);
+        if (!buttonText.equals("="))
+        {
+            textView.append(buttonText);
+        }
+        String input = textView.getText().toString();
+        String regex = "[\\+\\-\\*\\/\\=]";
+        String[] splitString = input.split(regex);
+        TextView textView2 = (TextView)findViewById(R.id.textView2);
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        if(matcher.find()) {
+            int start = matcher.start();
+            char operator = input.charAt(start);
+            if (splitString.length == 2) {
+                switch (operator) {
+                    case '+':
+                        sum = Double.parseDouble(splitString[0]) + Double.parseDouble(splitString[1]);
+                        textView.setText(Double.toString(sum));
+                        break;
+                    case '-':
+                        sum = Double.parseDouble(splitString[0]) - Double.parseDouble(splitString[1]);
+                        textView.setText(Double.toString(sum));
+                        break;
+                    case '*':
+                        sum = Double.parseDouble(splitString[0]) * Double.parseDouble(splitString[1]);
+                        textView.setText(Double.toString(sum));
+                        break;
+                    case '/':
+                        sum = Double.parseDouble(splitString[0]) / Double.parseDouble(splitString[1]);
+                        textView.setText(Double.toString(sum));
+                        break;
+                }
+                if (!buttonText.equals("="))
+                {
+                    textView.append(buttonText);
+                }
+
+            }
+        }
+    }
+
+    public void onClickNumber(View v) {
         int a = v.getId();
         Button b = (Button)v;
         String buttonText = b.getText().toString();
-//        int number = Integer.parseInt(buttonText);
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.append(buttonText);
-//        textView.setText(buttonText);
     }
 
-    public void caculator(View v){
+    public void onClickClear(View v) {
         TextView textView = (TextView)findViewById(R.id.textView);
-        String input = textView.getText().toString();
-        String regex = "\\D";
-        String[] splitString = input.split(regex);
-
-        TextView textView2 = (TextView)findViewById(R.id.textView2);
-//        textView2.setText(splitString.length);
-//        System.out.println(splitString[0]);
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-        for (String element: splitString) {
-            System.out.println(element);
-        }
-
-//        while (matcher.find()) {
-////           add list operator
-//
-//        }
+        textView.setText("");
+        sum = 0;
     }
-
-
 }
